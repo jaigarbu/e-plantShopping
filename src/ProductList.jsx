@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./ProductList.css";
 import CartItem from "./CartItem";
 import { addItem } from "./CartSlice";
@@ -10,6 +10,7 @@ function ProductList() {
   const [addedToCart, setAddedToCart] = useState({});
 
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.items);
 
   const plantsArray = [
     {
@@ -275,7 +276,7 @@ function ProductList() {
   };
   const handleCartClick = (e) => {
     e.preventDefault();
-    setShowCart(true); // Set showCart to true when cart icon is clicked
+    setShowCart(!showCart); // Set showCart to true when cart icon is clicked
   };
   const handlePlantsClick = (e) => {
     e.preventDefault();
@@ -294,6 +295,14 @@ function ProductList() {
       ...prevState,
       [product.name]: true, // Set the product name as key and value as true to indicate it's added to cart
     }));
+  };
+
+  const showTotal = () => {
+    let total = 0;
+    cart.forEach((item) => {
+      total += item.quantity;
+    });
+    return total;
   };
 
   return (
@@ -321,7 +330,6 @@ function ProductList() {
             </a>
           </div>
           <div>
-            {" "}
             <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}>
               <h1 className="cart">
                 <svg
@@ -344,6 +352,7 @@ function ProductList() {
                     id="mainIconPathAttribute"
                   ></path>
                 </svg>
+                <span className="cart_quantity_count">{showTotal()}</span>
               </h1>
             </a>
           </div>

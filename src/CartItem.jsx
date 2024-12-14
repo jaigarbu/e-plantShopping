@@ -16,7 +16,7 @@ const CartItem = ({ onContinueShopping }) => {
     return total;
   };
 
-  const handleContinueShopping = (e) => {};
+  const handleContinueShopping = (e) => onContinueShopping(e);
 
   const handleIncrement = (item) => {
     cart.forEach((planta) => {
@@ -29,8 +29,8 @@ const CartItem = ({ onContinueShopping }) => {
   const handleDecrement = (item) => {
     cart.forEach((planta) => {
       if (planta.name === item.name) {
-        if (planta.quantity < 1) return false;
         dispatch(updateQuantity({ ...item, quantity: item.quantity - 1 }));
+        if (planta.quantity == 1) dispatch(removeItem(item.name));
       }
     });
   };
